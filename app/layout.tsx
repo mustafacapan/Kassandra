@@ -6,10 +6,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 // Tarayıcı sekmesindeki Başlık ve İkon ayarları
 export const metadata: Metadata = {
-  title: "Kassandra | Autonomous Cloud Security",
+  title: "Kassandra",
   description: "Autonomous Graph-Based Cloud Security & Auditing Engine",
   icons: {
-    icon: "/logo.jpeg", // Yeni vektörel logo sekmede parlayacak
+    icon: "/logo.jpeg", // 
   },
 };
 

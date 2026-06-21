@@ -5,7 +5,7 @@ export interface ModuleDetail {
   title: string;
   tag: string;
   category: string;
-  // Teknik görünüm bilgileri
+  
   technical: {
     short: string;
     specTitle: string;
@@ -13,7 +13,7 @@ export interface ModuleDetail {
     metric: string;
     metricLabel: string;
   };
-  // Yönetici (CIO/CISO) görünüm bilgileri
+  
   executive: {
     short: string;
     specTitle: string;

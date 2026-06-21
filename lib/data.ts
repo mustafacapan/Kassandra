@@ -330,11 +330,10 @@ export const futureModules = [
     id: "agentic-ai",
     tag: "ROADMAP_AGENTIC_AI",
     title: "Agentic AI",
-    short: "Autonomous agent swarm (Beyin & Kollar) executing strategy graphs, attack path simulations, and zero-trust policy orchestration.",
+    short: "Autonomous agent swarm (Brain & Arns) executing strategy graphs, attack path simulations, and zero-trust policy orchestration.",
     business: `**CEO / CISO Executive Summary**
-Kassandra Agentic AI introduces a paradigm shift in cloud security by replacing static, reactive detection systems with an autonomous swarm of AI agents. The architecture is organized around the **"Beyin (Brain) & Kollar (Arms)"** design metaphor:
-- **Beyin (The Brain - Orchestration Layer):** Powered by a fine-tuned dual-model setup using Llama 3.1 8B (for rapid, low-latency triage) and 70B (for complex, multi-hop reasoning) models. It operates within a local, sandboxed Open Policy Agent (OPA) policy gate with strict Human-in-the-Loop (HITL) approval protocols.
-- **Kollar (The Arms - Execution Swarm):** A cooperative swarm of specialized Rust-based micro-agents (Discovery, Analysis, Defense, Deception, and Reporting) acting as execution units that actively isolate compromised servers, rotate compromised credentials, and spin up deception environments in real-time.
+Kassandra Agentic AI introduces a paradigm shift in cloud security by replacing static, reactive detection systems with an autonomous swarm of AI agents. The architecture is organized around the (The Brain - Orchestration Layer):** Powered by a fine-tuned dual-model setup using Llama 3.1 8B (for rapid, low-latency triage) and 70B (for complex, multi-hop reasoning) models. It operates within a local, sandboxed Open Policy Agent (OPA) policy gate with strict Human-in-the-Loop (HITL) approval protocols.
+(The Arms - Execution Swarm):** A cooperative swarm of specialized Rust-based micro-agents (Discovery, Analysis, Defense, Deception, and Reporting) acting as execution units that actively isolate compromised servers, rotate compromised credentials, and spin up deception environments in real-time.
 
 **Business Value & Financial Impact:**
 - **Zero Exposure Window:** Reduces Mean Time to Respond (MTTR) from days to sub-seconds, automatically halting data breaches before exfiltration begins.
