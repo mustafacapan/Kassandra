@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BCE/DSPM Security Suite Analytics - Neon Cyberpunk</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --neon-cyan: #00f2ff;
+            --neon-pink: #ff2e63;
+            --neon-green: #00ff9f;
+            --neon-amber: #ffcc00;
+            --void-bg: #020617;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+        }
+        .glow-pink {
+            box-shadow: 0 0 15px rgba(255, 46, 99, 0.4);
+        }
+        .text-glow-cyan {
+            text-shadow: 0 0 8px rgba(0, 242, 255, 0.8);
+        }
+        .text-glow-pink {
+            text-shadow: 0 0 8px rgba(255, 46, 99, 0.8);
+        }
+        .text-glow-green {
+            text-shadow: 0 0 8px rgba(0, 255, 159, 0.8);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00f2ff;
+            box-shadow: 0 0 10px #00f2ff;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#020617",
+                      "surface": "#0f172a",
+                      "surface-container": "#1e293b",
+                      "surface-container-low": "#0b1120",
+                      "surface-variant": "#334155",
+                      "primary": "#00f2ff",
+                      "secondary": "#00ff9f",
+                      "tertiary": "#ff2e63",
+                      "error": "#ff2e63",
+                      "outline": "#475569",
+                      "on-surface": "#f1f5f9",
+                      "on-surface-variant": "#94a3b8",
+                      "on-primary": "#020617",
+                      "on-secondary": "#020617",
+                      "primary-container": "rgba(0, 242, 255, 0.1)",
+                      "secondary-container": "rgba(0, 255, 159, 0.1)",
+                      "tertiary-container": "rgba(255, 46, 99, 0.1)",
+                      "warning-neon": "#ffcc00"
+              },
+              "borderRadius": {
+                      "DEFAULT": "2px",
+                      "lg": "4px",
+                      "xl": "8px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "panel-padding": "20px",
+                      "margin": "32px",
+                      "stack-sm": "8px",
+                      "base": "4px",
+                      "gutter": "24px",
+                      "stack-md": "16px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "data-md": ["JetBrains Mono"],
+                      "data-lg": ["JetBrains Mono"],
+                      "headline-md": ["Inter"],
+                      "label-sm": ["JetBrains Mono"],
+                      "display-lg": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "data-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "data-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden selection:bg-primary selection:text-on-primary">
+<!-- Sidebar Navigation -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-background border-r border-primary/20 flex flex-col py-panel-padding z-50">
+<div class="px-6 mb-10">
+<h1 class="font-headline-sm text-headline-sm text-primary font-bold text-glow-cyan">CORE_SEC</h1>
+<p class="text-[10px] font-label-sm text-primary/60 tracking-[0.2em] uppercase">V2.4.1 SYS_ROOT</p>
+</div>
+<nav class="flex-1 space-y-1 px-3">
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary border-r-2 border-primary cursor-pointer transition-all duration-300 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">security</span>
+<span>BCE Engine</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary cursor-pointer transition-all duration-300 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">database</span>
+<span>DSPM Engine</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary cursor-pointer transition-all duration-300 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">memory</span>
+<span>eBPF Monitor</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary cursor-pointer transition-all duration-300 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span>SQS Pipeline</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary cursor-pointer transition-all duration-300 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">developer_board</span>
+<span>RustCore</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant/20 hover:text-primary cursor-pointer transition-all duration-300 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">verified</span>
+<span>APVE Logic</span>
+</a>
+</nav>
+<div class="px-3 space-y-1 pt-4 border-t border-outline/20">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary transition-all duration-300 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">monitor_heart</span>
+<span>System Health</span>
+</a>
+<div class="mt-4 px-3 flex items-center gap-3">
+<div class="w-8 h-8 rounded-sm bg-primary/20 flex items-center justify-center text-primary border border-primary/40 font-bold text-xs">OP</div>
+<div class="overflow-hidden">
+<p class="text-xs font-bold text-on-surface truncate font-data-md">Admin_Operator</p>
+<p class="text-[10px] text-primary/60 font-label-sm">LEVEL_3_AUTH</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 min-h-screen">
+<!-- Top Nav -->
+<header class="w-full sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-primary/20 flex justify-between items-center px-gutter py-4">
+<h2 class="font-headline-md text-headline-md font-bold tracking-tight text-on-surface uppercase"><span class="text-primary font-data-lg mr-2">&gt;</span>Security_Suite_Performance</h2>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:block">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-primary/40 text-sm">search</span>
+<input class="bg-surface-container-low border border-primary/20 rounded-none pl-10 pr-4 py-1 text-sm focus:ring-1 focus:ring-primary focus:border-primary w-64 font-data-md" placeholder="SEARCH_PARAMS..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-primary">
+<button class="hover:text-glow-cyan transition-all active:scale-95"><span class="material-symbols-outlined">settings</span></button>
+<button class="hover:text-glow-cyan transition-all active:scale-95 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-tertiary rounded-full glow-pink"></span>
+</button>
+</div>
+</div>
+</header>
+<div class="p-margin max-w-[1600px] mx-auto space-y-8">
+<!-- Performance Overview Header -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-8 glass-panel p-8 flex flex-col justify-center relative overflow-hidden border-l-2 border-primary">
+<div class="absolute top-0 right-0 p-8 opacity-5">
+<span class="material-symbols-outlined text-[150px]">terminal</span>
+</div>
+<div class="z-10">
+<h3 class="text-primary/60 font-label-sm uppercase tracking-[0.3em] mb-4">TOTAL_SYSTEM_EXECUTION</h3>
+<div class="flex items-baseline gap-16">
+<div>
+<span class="font-display-lg text-display-lg text-primary text-glow-cyan block">11s</span>
+<span class="text-xs text-primary/50 font-label-sm uppercase tracking-wider">SYNTHETIC_RUNTIME</span>
+</div>
+<div>
+<span class="font-display-lg text-display-lg text-tertiary text-glow-pink block">60-120s</span>
+<span class="text-xs text-tertiary/50 font-label-sm uppercase tracking-wider">REAL_WORLD_EST</span>
+</div>
+</div>
+</div>
+</div>
+<div class="md:col-span-4 glass-panel p-6 border-r-2 border-warning-neon">
+<h3 class="text-on-surface-variant font-label-sm uppercase mb-4 tracking-widest">CORE_ALERT_STATUS</h3>
+<div class="space-y-4 font-data-md">
+<div class="flex justify-between items-center">
+<span class="text-sm">BCE/DSPM_LATENCY</span>
+<span class="px-2 py-0.5 border border-secondary text-secondary text-[10px] font-bold text-glow-green">OPTIMAL</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm">EBPF_OVERHEAD</span>
+<span class="px-2 py-0.5 border border-warning-neon text-warning-neon text-[10px] font-bold">WARNING</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm">RUSTCORE_INTEGRATION</span>
+<span class="px-2 py-0.5 border border-primary text-primary text-[10px] font-bold text-glow-cyan">STABLE</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Latencies Chart -->
+<section class="glass-panel p-8">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase tracking-wider">LATENCY_DISTRIBUTION</h3>
+<p class="text-on-surface-variant text-sm font-label-sm uppercase tracking-widest mt-1">SYNTHETIC_VS_PRODUCTION_SIM</p>
+</div>
+<div class="flex gap-8">
+<div class="flex items-center gap-3">
+<span class="w-4 h-4 bg-primary glow-cyan"></span>
+<span class="text-xs font-label-sm uppercase tracking-widest">SYNTHETIC (ms)</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="w-4 h-4 bg-tertiary glow-pink"></span>
+<span class="text-xs font-label-sm uppercase tracking-widest">REAL-WORLD (ms)</span>
+</div>
+</div>
+</div>
+<div class="h-80 flex items-end justify-between gap-6 px-4">
+<!-- BCE -->
+<div class="flex-1 flex flex-col items-center gap-4 group relative">
+<div class="w-full flex items-end justify-center gap-2 h-64 border-b border-outline/20">
+<div class="w-10 bg-primary glow-cyan transition-all duration-500 hover:brightness-125" style="height: 32px;"></div>
+<div class="w-10 bg-tertiary glow-pink transition-all duration-500 hover:brightness-125" style="height: 150px;"></div>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-[11px] font-label-sm text-primary uppercase">BCE</span>
+<span class="text-[9px] font-data-md text-on-surface-variant mt-1">32/300ms</span>
+</div>
+</div>
+<!-- DSPM -->
+<div class="flex-1 flex flex-col items-center gap-4 group relative">
+<div class="w-full flex items-end justify-center gap-2 h-64 border-b border-outline/20">
+<div class="w-10 bg-primary glow-cyan transition-all duration-500 hover:brightness-125" style="height: 33px;"></div>
+<div class="w-10 bg-tertiary glow-pink transition-all duration-500 hover:brightness-125" style="height: 180px;"></div>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-[11px] font-label-sm text-primary uppercase">DSPM</span>
+<span class="text-[9px] font-data-md text-on-surface-variant mt-1">33/400ms</span>
+</div>
+</div>
+<!-- eBPF -->
+<div class="flex-1 flex flex-col items-center gap-4 group relative">
+<div class="w-full flex items-end justify-center gap-2 h-64 border-b border-outline/20">
+<div class="w-10 bg-primary glow-cyan transition-all duration-500 hover:brightness-125" style="height: 107px;"></div>
+<div class="w-10 bg-tertiary glow-pink transition-all duration-500 hover:brightness-125" style="height: 130px;"></div>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-[11px] font-label-sm text-primary uppercase">eBPF</span>
+<span class="text-[9px] font-data-md text-on-surface-variant mt-1">107/150ms</span>
+</div>
+</div>
+<!-- SQS -->
+<div class="flex-1 flex flex-col items-center gap-4 group relative">
+<div class="w-full flex items-end justify-center gap-2 h-64 border-b border-outline/20">
+<div class="w-10 bg-primary glow-cyan transition-all duration-500 hover:brightness-125" style="height: 81px;"></div>
+<div class="w-10 bg-tertiary glow-pink transition-all duration-500 hover:brightness-125" style="height: 150px;"></div>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-[11px] font-label-sm text-primary uppercase">SQS</span>
+<span class="text-[9px] font-data-md text-on-surface-variant mt-1">81/300ms</span>
+</div>
+</div>
+<!-- RustCore -->
+<div class="flex-1 flex flex-col items-center gap-4 group relative">
+<div class="w-full flex items-end justify-center gap-2 h-64 border-b border-outline/20">
+<div class="w-10 bg-primary glow-cyan transition-all duration-500 hover:brightness-125" style="height: 99px;"></div>
+<div class="w-10 bg-tertiary glow-pink transition-all duration-500 hover:brightness-125" style="height: 200px;"></div>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-[11px] font-label-sm text-primary uppercase">RUST</span>
+<span class="text-[9px] font-data-md text-on-surface-variant mt-1">99/500ms</span>
+</div>
+</div>
+<!-- APVE -->
+<div class="flex-1 flex flex-col items-center gap-4 group relative">
+<div class="w-full flex items-end justify-center gap-2 h-64 border-b border-outline/20">
+<div class="w-10 bg-primary glow-cyan transition-all duration-500 hover:brightness-125" style="height: 220px;"></div>
+<div class="w-10 bg-tertiary glow-pink transition-all duration-500 hover:brightness-125" style="height: 250px;"></div>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-[11px] font-label-sm text-primary uppercase">APVE</span>
+<span class="text-[9px] font-data-md text-on-surface-variant mt-1">1108/5000ms+</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Engine Specific Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- BCE Card -->
+<div class="glass-panel p-6 border-t-2 border-primary">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary">security</span>
+<h4 class="font-bold text-lg tracking-wider uppercase">BCE_Engine</h4>
+</div>
+<p class="text-xs text-on-surface-variant mb-6 leading-relaxed font-body-md">Broad classification and metadata enrichment across legacy environments.</p>
+<div class="space-y-4 font-data-md">
+<div>
+<p class="text-[10px] font-label-sm text-primary uppercase tracking-widest mb-2">TEST_RESULTS</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary"></span> 32ms Local exec</li>
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary"></span> Zero cold-start</li>
+</ul>
+</div>
+<div class="pt-4 border-t border-primary/10">
+<p class="text-[10px] font-label-sm text-tertiary uppercase tracking-widest mb-2">REAL_WORLD_RISKS</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-tertiary"></span> 300ms Network RTT</li>
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-tertiary"></span> Cloud throttles</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- DSPM Card -->
+<div class="glass-panel p-6 border-t-2 border-primary">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary">database</span>
+<h4 class="font-bold text-lg tracking-wider uppercase">DSPM_Engine</h4>
+</div>
+<p class="text-xs text-on-surface-variant mb-6 leading-relaxed">Data Security Posture Management. Sensitivity mapping core.</p>
+<div class="space-y-4 font-data-md">
+<div>
+<p class="text-[10px] font-label-sm text-primary uppercase tracking-widest mb-2">TEST_RESULTS</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary"></span> 33ms Graph traverse</li>
+</ul>
+</div>
+<div class="pt-4 border-t border-primary/10">
+<p class="text-[10px] font-label-sm text-tertiary uppercase tracking-widest mb-2">REAL_WORLD_RISKS</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-tertiary"></span> 400ms DB Pooling lag</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- eBPF Card -->
+<div class="glass-panel p-6 border-t-2 border-secondary">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-secondary">memory</span>
+<h4 class="font-bold text-lg tracking-wider uppercase">eBPF_Monitor</h4>
+</div>
+<p class="text-xs text-on-surface-variant mb-6 leading-relaxed">Kernel-level observability for traffic flow and system calls.</p>
+<div class="space-y-4 font-data-md">
+<div>
+<p class="text-[10px] font-label-sm text-primary uppercase tracking-widest mb-2">TEST_RESULTS</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary"></span> 107ms Buffer flush</li>
+</ul>
+</div>
+<div class="pt-4 border-t border-primary/10">
+<p class="text-[10px] font-label-sm text-secondary uppercase tracking-widest mb-2">OPTIMIZED_EXPECTATION</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-secondary"></span> 150ms Post-warmup</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- SQS Card -->
+<div class="glass-panel p-6 border-t-2 border-primary">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary">account_tree</span>
+<h4 class="font-bold text-lg tracking-wider uppercase">SQS_Pipeline</h4>
+</div>
+<p class="text-xs text-on-surface-variant mb-6 leading-relaxed">Async message handling for high-throughput logs.</p>
+<div class="space-y-4 font-data-md">
+<div>
+<p class="text-[10px] font-label-sm text-primary uppercase tracking-widest mb-2">TEST_RESULTS</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary"></span> 81ms Batch proc</li>
+</ul>
+</div>
+<div class="pt-4 border-t border-primary/10">
+<p class="text-[10px] font-label-sm text-tertiary uppercase tracking-widest mb-2">REAL_WORLD_RISKS</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-tertiary"></span> 300ms Regional propagation</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- RustCore Card -->
+<div class="glass-panel p-6 border-t-2 border-primary">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary">developer_board</span>
+<h4 class="font-bold text-lg tracking-wider uppercase">RustCore</h4>
+</div>
+<p class="text-xs text-on-surface-variant mb-6 leading-relaxed">High-performance logic gate for critical system checks.</p>
+<div class="space-y-4 font-data-md">
+<div>
+<p class="text-[10px] font-label-sm text-primary uppercase tracking-widest mb-2">TEST_RESULTS</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary"></span> 99ms Deterministic</li>
+</ul>
+</div>
+<div class="pt-4 border-t border-primary/10">
+<p class="text-[10px] font-label-sm text-tertiary uppercase tracking-widest mb-2">REAL_WORLD_EST</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-tertiary"></span> 500ms Fixed-rate</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- APVE Card -->
+<div class="glass-panel p-6 border-t-2 border-tertiary">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-tertiary">verified</span>
+<h4 class="font-bold text-lg tracking-wider uppercase">APVE_Logic</h4>
+</div>
+<p class="text-xs text-on-surface-variant mb-6 leading-relaxed">Advanced Policy Verification. Heavy computation layer.</p>
+<div class="space-y-4 font-data-md">
+<div>
+<p class="text-[10px] font-label-sm text-primary uppercase tracking-widest mb-2">TEST_RESULTS</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary"></span> 1108ms Stress load</li>
+</ul>
+</div>
+<div class="pt-4 border-t border-primary/10">
+<p class="text-[10px] font-label-sm text-tertiary uppercase tracking-widest mb-2">REAL_WORLD_RISKS</p>
+<ul class="text-[11px] space-y-1">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-tertiary"></span> 5000ms+ Concurrency lock</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Debt Section -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-gutter pb-margin">
+<div class="glass-panel overflow-hidden">
+<div class="px-6 py-4 bg-primary/10 border-b border-primary/20 flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">warning</span>
+<h3 class="font-bold uppercase tracking-wider">KNOWN_TECH_DEBT</h3>
+</div>
+<div class="p-6">
+<div class="space-y-4">
+<div class="flex gap-4 p-4 border border-outline/10 hover:border-tertiary/40 transition-all group">
+<div class="w-10 h-10 bg-tertiary/10 flex items-center justify-center text-tertiary border border-tertiary/20 group-hover:glow-pink transition-all">
+<span class="material-symbols-outlined">running_with_errors</span>
+</div>
+<div>
+<p class="text-sm font-bold font-data-md text-on-surface uppercase">GIL Acquisition Delay</p>
+<p class="text-xs text-on-surface-variant mt-1">Python-level mutex causing thread contention during APVE runs.</p>
+</div>
+</div>
+<div class="flex gap-4 p-4 border border-outline/10 hover:border-tertiary/40 transition-all group">
+<div class="w-10 h-10 bg-tertiary/10 flex items-center justify-center text-tertiary border border-tertiary/20 group-hover:glow-pink transition-all">
+<span class="material-symbols-outlined">layers_clear</span>
+</div>
+<div>
+<p class="text-sm font-bold font-data-md text-on-surface uppercase">Neo4j Connection Pool</p>
+<p class="text-xs text-on-surface-variant mt-1">Stale connection cleanup required for DSPM concurrency.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-panel overflow-hidden">
+<div class="px-6 py-4 bg-secondary/10 border-b border-secondary/20 flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">rocket_launch</span>
+<h3 class="font-bold uppercase tracking-wider">STRATEGIC_COMMANDS</h3>
+</div>
+<div class="p-6">
+<div class="space-y-6 font-data-md">
+<div class="relative pl-8 border-l-2 border-secondary/40 pb-6">
+<span class="absolute -left-[9px] top-0 w-4 h-4 bg-secondary border-4 border-background glow-cyan"></span>
+<h4 class="text-sm font-bold text-secondary uppercase">LocalStack_Integration</h4>
+<p class="text-[11px] text-on-surface-variant mt-1 uppercase tracking-tighter">AWS SQS/S3 emulation staging.</p>
+</div>
+<div class="relative pl-8 border-l-2 border-outline/20 pb-6">
+<span class="absolute -left-[9px] top-0 w-4 h-4 bg-outline border-4 border-background"></span>
+<h4 class="text-sm font-bold text-on-surface uppercase">Throughput_Stress_Test</h4>
+<p class="text-[11px] text-on-surface-variant mt-1 uppercase tracking-tighter">100k events/sec APVE simulation.</p>
+</div>
+</div>
+<button class="w-full mt-4 py-3 bg-primary text-background font-bold uppercase tracking-[0.2em] border border-primary/50 hover:bg-background hover:text-primary transition-all active:scale-[0.98] flex items-center justify-center gap-2 group">
+<span class="material-symbols-outlined text-sm group-hover:animate-pulse">analytics</span>
+                        RUN_FULL_SWEEP_INIT
+                    </button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<script>
+    // Subtle neon flicker effect
+    const flickerElements = document.querySelectorAll('.text-glow-cyan, .text-glow-pink, .glow-cyan, .glow-pink');
+    setInterval(() => {
+        flickerElements.forEach(el => {
+            if (Math.random() > 0.98) {
+                el.style.opacity = '0.6';
+                setTimeout(() => el.style.opacity = '1', 50);
+            }
+        });
+    }, 100);
+
+    // Grid interaction
+    document.querySelectorAll('.glass-panel').forEach(panel => {
+        panel.addEventListener('mouseenter', () => {
+            panel.style.boxShadow = '0 0 20px rgba(0, 242, 255, 0.15)';
+            panel.style.borderColor = 'rgba(0, 242, 255, 0.3)';
+            panel.style.transform = 'translateY(-2px)';
+            panel.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        });
+        panel.addEventListener('mouseleave', () => {
+            panel.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.5)';
+            panel.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+            panel.style.transform = 'translateY(0px)';
+        });
+    });
+</script>
+</body></html>

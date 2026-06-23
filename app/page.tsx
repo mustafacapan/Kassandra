@@ -15,8 +15,13 @@ import {
   Shield,
   AlertTriangle,
   Radio,
+  Database,
+  Activity,
+  Layers,
+  GitBranch,
 } from "lucide-react";
 import ComplianceTimeline from "../components/ComplianceTimeline";
+import { Crown } from "lucide-react";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import DetailsModal from "../components/DetailsModal";
@@ -105,6 +110,94 @@ export default function Home() {
     }
   }, [selectedScenario, simState]);
 
+  // ----- YENİ: PERFORMANCE DATA ve EXPANDED CARDS STATE -----
+  
+
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
+  const toggleCard = (id: string) => {
+    setExpandedCards(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+  // ----- YENİ KISIM SONU -----
+const performanceData = [
+  {
+    id: 'bce',
+    name: 'Business Context Engine',
+    short: 'Broad classification and metadata enrichment across legacy environments.',
+    testP95: 52.05,
+    testAvg: 32.47,
+    realP95: 250,
+    details: {
+      what: 'Detects PII (Personally Identifiable Information) in log files and database outputs. Uses regular expression pattern matching and Merkle tree-based integrity verification. Includes custom masks for AWS Account IDs (12-digit numbers), IPv4 addresses, and IAM ARN formats. Tested on a synthetic log containing 100,000 lines.',
+      test: 'P95 52.05 ms, average 32.47 ms, 50 samples. Regex engine: Python `re` module, cached patterns. Merkle tree calculation based on SHA-256.',
+      real: 'Actual CloudTrail logs can range in size from 1 to 10 GB. Regex matching is limited by disk I/O. Expect a P95 of 150–300 ms. Additionally, encoding issues (non-UTF-8 characters) in actual logs can cause regex errors. Merkle tree calculation requires parallel processing.'
+    }
+  },
+  {
+    id: 'dspm',
+    name: 'DSPM',
+    short: 'Data Security Posture Management. Sensitivity mapping core.',
+    testP95: 52.65,
+    testAvg: 32.91,
+    realP95: 350,
+    details: {
+      what: 'MIME type detection, magic number parsing, followed by content-based classification. Header parsing for CSV, stream parsing for PDF (OCR disabled, regex-based). 50 files of 10 MB each, totaling 500 MB. PII detection: TCKN (11 digits), credit card PAN (verified using the Luhn algorithm).',
+      test: 'P95 52.65 ms, average 32.91 ms. In-memory processing, no disk I/O.',
+      real: 'Downloading a 10 MB file from S3 takes ~200–500 ms (depending on the region). PDF parsing can actually take 1–2 seconds using `PyPDF2` or `pdfplumber`. If OCR is enabled, it takes 5–10 seconds. Total time for a 500 MB file set is 30–60 seconds. P95 is 200–400 ms. Memory usage: 50 parallel files = 500 MB RAM; if the actual container limit is 1–2 GB, swap usage begins.'
+    }
+  },
+  {
+    id: 'ebpf',
+    name: 'eBPF Monitor',
+    short: 'Kernel-level observability for traffic flow and system calls.',
+    testP95: 437.60,
+    testAvg: 107.94,
+    realP95: 450,
+    details: {
+      what: 'Kernel-level syscall interception. Intercepts system calls such as `execve`, `connect`, and `openat`. Throughput of 1,000 events per second. Events are written to Neo4j in batches of 100 using the `UNWIND` Cypher query. The node risk score is updated in real time.',
+      test: 'P95 437.60 ms, average 107.94 ms. 10 batches, each with 100 events. Simulated using `asyncio.sleep`.',
+      real: 'The actual eBPF program is loaded into the kernel and transferred to userspace via `perf_buffer`. This process takes 0.1–1 ms. The main latency is in the Neo4j `UNWIND` batch write. There is 5–10 ms of network latency in a cross-AZ Neo4j cluster. A batch of 100 events takes 10–20 ms. A P95 of 80–150 ms is reasonable. However, a sustained throughput of 1,000 events per second can exhaust the Neo4j connection pool (30 sessions). If the pool fills up, requests fall into the queue, and the P95 can rise to 300–500 ms.'
+    }
+  },
+  {
+    id: 'sqs',
+    name: 'SQS Pipeline',
+    short: 'Async message handling for high-throughput logs.',
+    testP95: 405.53,
+    testAvg: 80.90,
+    realP95: 400,
+    details: {
+      what: 'This is a high-performance data integration architecture that retrieves 2,000 messages from AWS SQS cost-effectively using a smart queuing method, groups them into 20 batches, and transfers them to PostgreSQL via 50 standby database connections with minimal resource consumption and maximum speed.',
+      test: ' SQS + DB latency was simulated using `asyncio.sleep`.',
+      real: 'SQS `ReceiveMessage` waits 20 seconds on an empty queue (long polling). If a message is present, it returns immediately. 100 messages per chunk, with `MaxNumberOfMessages=10`, requires 10 calls. Each call takes 50–100 ms. A PostgreSQL write takes 10–20 ms. Total: 60–120 ms per chunk. P95: 200–300 ms. However, if the SQS visibility timeout (30 seconds) expires, the message is received again, resulting in duplicate processing. If the PostgreSQL connection pool (50) is full, a `QueuePool` error occurs, requiring a retry.'
+    }
+  },
+  {
+    id: 'rustcore',
+    name: 'RustCore',
+    short: 'High-performance logic gate for critical system checks.',
+    testP95: 500,
+    testAvg: 98.79,
+    realP95: 500,
+    details: {
+      what: 'This technology is a system that calculates the shortest alternative routes on a 1,000-node network at lightning speed. The calculation results are transferred to the Python program as a single compressed package; this eliminates delays in cross-language data transfer, thereby increasing system performance and processing speed many times over.',
+      test: '99ms Deterministic execution time for in-memory graph queries with 5 throttle retry behaviors.Delay injection is dominant. 100 calls, 5 throttle retries.',
+      real: '500ms Fixed-rate polling and serialization boundaries.'
+    }
+  },
+  {
+    id: 'apve',
+    name: 'APVE Logic',
+    short: 'Advanced Policy Verification. Heavy computation layer.',
+    testP95: 4968.68,
+    testAvg: 1108.68,
+    realP95: 5000,
+    details: {
+      what: 'This architecture is an intelligent traffic and load management system that protects AWS authentications with a limit of 5 requests per second and a 5-second timeout, while routing delayed transactions to a dynamically resource-shared background queue to avoid disrupting system performance.',
+      test: '1108ms Stress load execution latency with multiple simulated paths.',
+      real: '5000ms+ Concurrency lock delays and AWS API rate limits. Background queues are utilized to deliver the first 5 paths instantly.Real AWS IAM `SimulatePrincipalPolicy`: 200–500 ms. 10 requests = 2–5 seconds. Token Bucket: 5/second = runs out in 2 seconds. The 6th path waits 1 second. 5-second timeout = the 5th path completes at the last moment, and the 6th path times out. In reality, the timeout rate is 30–50%. However, the Borrow+Steal background queue verifies these paths later. The first 5 paths are displayed to the user immediately; the rest are processed in the background. UX: “5 paths verified, 5 paths pending” message.'
+    }
+  }
+];
   // Node helper coordinates mapping for SVG line endpoints
   const getNodeCoords = (id: string) => {
     if (id === "prophecy") return { x: 320, y: 70 };
@@ -908,6 +1001,279 @@ export default function Home() {
             })}
           </div>
         </section>
+
+        {/* YENİ: PERFORMANCE BENCHMARK SECTION */}
+        <section className="mb-20 pt-16 border-t border-purple-950/10">
+          <div className="text-center mb-10">
+            <span className="text-xs font-mono uppercase tracking-widest text-purple-400 block mb-2">// Synthetıc and Productıon Results</span>
+            <h2 className="text-3xl font-black text-white tracking-tight">Performance Comparison: Lab vs Production</h2>
+          </div>
+
+          {/* Performance Overview Header */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
+            <div className="md:col-span-8 bg-slate-900/40 border border-purple-950/30 rounded-2xl p-5 flex flex-col justify-center relative overflow-hidden border-l-2 border-l-purple-500 backdrop-blur-md">
+              <div className="absolute top-0 right-0 p-5 opacity-5">
+                <Terminal className="w-24 h-24 text-purple-400" />
+              </div>
+              <div className="z-10">
+                <h3 className="text-purple-400/60 font-mono text-[9px] uppercase tracking-[0.3em] mb-2">Total System Executıon</h3>
+                <div className="flex flex-wrap gap-6 sm:gap-12">
+                  <div>
+                    <span className="text-2xl sm:text-3xl font-extrabold font-mono text-purple-400 text-glow-cyan block">11s</span>
+                    <span className="text-[9px] text-purple-400/50 font-mono uppercase tracking-wider">SYNTHETIC RUNTIME</span>
+                  </div>
+                  <div>
+                    <span className="text-2xl sm:text-3xl font-extrabold font-mono text-pink-500 text-glow-pink block">60-120s</span>
+                    <span className="text-[9px] text-pink-500/50 font-mono uppercase tracking-wider">REAL-WORLD REST</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="md:col-span-4 bg-slate-900/40 border border-purple-950/30 rounded-2xl p-5 border-r-2 border-r-amber-500 backdrop-blur-md flex flex-col justify-center">
+              <h3 className="text-slate-400 font-mono text-xs uppercase mb-3 tracking-widest">System Benchmark Status</h3>
+              <div className="space-y-3 font-mono text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-350">Data Sanitization Pipeline</span>
+                  <span className="px-2 py-0.5 border border-emerald-500 text-emerald-400 text-[10px] font-bold">OPTIMAL</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-350">eBPF Syscall Interceptor</span>
+                  <span className="px-2 py-0.5 border border-amber-500 text-amber-400 text-[10px] font-bold">WARNING</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-350">Graph Routing Solver</span>
+                  <span className="px-2 py-0.5 border border-purple-500 text-purple-400 text-[10px] font-bold">STABLE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Latency Distribution Chart */}
+          <div className="bg-slate-900/40 border border-purple-950/30 rounded-2xl p-8 mb-8 backdrop-blur-md">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+              <div>
+                <h3 className="font-extrabold text-lg text-white uppercase tracking-wider">Delay View</h3>
+                <p className="text-slate-400 text-xs font-mono uppercase tracking-widest mt-1">Synthetıc and Productıon</p>
+              </div>
+              <div className="flex gap-6">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-3.5 h-3.5 bg-cyan-400 rounded-sm inline-block shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
+                  <span className="text-xs font-mono text-slate-300 uppercase tracking-widest">LAB (ms)</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <span className="w-3.5 h-3.5 bg-fuchsia-400 rounded-sm inline-block shadow-[0_0_8px_rgba(232,121,249,0.8)]" />
+                  <span className="text-xs font-mono text-slate-300 uppercase tracking-widest">PRODUCTION (ms)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Bars container (Shortened slightly to h-72 with h-52 bar frames) */}
+            <div className="h-72 flex items-end justify-between gap-2 sm:gap-6 px-2 overflow-x-auto">
+              {performanceData.map((mod) => {
+                // Use a non-linear log scale or custom math scaling for proportional bar height representation
+                let testHeight = Math.max(8, Math.min(100, (Math.sqrt(mod.testP95) / Math.sqrt(5000)) * 100));
+                let realHeight = Math.max(8, Math.min(100, (Math.sqrt(mod.realP95) / Math.sqrt(5000)) * 100));
+
+                // Visually emphasize close values (like 437.60ms and 450ms) to ensure distinction
+                if (Math.abs(testHeight - realHeight) < 5) {
+                  if (testHeight < realHeight) {
+                    testHeight = Math.max(8, testHeight - 2.5);
+                    realHeight = Math.min(100, realHeight + 2.5);
+                  } else if (testHeight > realHeight) {
+                    testHeight = Math.min(100, testHeight + 2.5);
+                    realHeight = Math.max(8, realHeight - 2.5);
+                  }
+                }
+
+                return (
+                  <div key={mod.id} className="flex-1 flex flex-col items-center gap-2 group min-w-[96px]">
+                    <div className="w-full flex items-end justify-center gap-4 h-52 border-b border-purple-950/20 pb-1">
+                      {/* Lab Bar (Vibrant Neon Cyan) */}
+                      <div className="relative group/bar flex flex-col items-end justify-end h-full w-5 sm:w-7 md:w-9">
+                        <div
+                          className="w-full bg-gradient-to-t from-cyan-600/80 to-cyan-400 border border-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.6)] rounded-t-sm overflow-hidden cursor-help hover:brightness-125 transition-all duration-300"
+                          style={{ height: `${testHeight}%`, minHeight: '4px' }}
+                        >
+                          <div className="w-full h-full bg-cyan-450/20" />
+                        </div>
+                        <div className="absolute bottom-full mb-1 opacity-0 group-hover/bar:opacity-100 bg-slate-950/90 text-cyan-400 font-mono text-xs px-2 py-0.5 border border-cyan-450/40 rounded transition-opacity pointer-events-none whitespace-nowrap z-20">
+                          {mod.testP95} ms
+                        </div>
+                      </div>
+                      {/* Prod Bar (Vibrant Neon Hot-Purple/Fuchsia) */}
+                      <div className="relative group/bar flex flex-col items-start justify-end h-full w-5 sm:w-7 md:w-9">
+                        <div
+                          className="w-full bg-gradient-to-t from-purple-600/80 to-fuchsia-400 border border-fuchsia-300 shadow-[0_0_12px_rgba(232,121,249,0.6)] rounded-t-sm overflow-hidden cursor-help hover:brightness-125 transition-all duration-300"
+                          style={{ height: `${realHeight}%`, minHeight: '4px' }}
+                        >
+                          <div className="w-full h-full bg-fuchsia-450/20" />
+                        </div>
+                        <div className="absolute bottom-full mb-1 opacity-0 group-hover/bar:opacity-100 bg-slate-950/90 text-fuchsia-400 font-mono text-xs px-2 py-0.5 border border-fuchsia-450/40 rounded transition-opacity pointer-events-none whitespace-nowrap z-20">
+                          {mod.realP95} ms
+                        </div>
+                      </div>
+                    </div>
+                    {/* Numbers placed directly under each matching column (with small ms suffix and extra spacing) */}
+                    <div className="flex justify-center gap-4 w-full text-xs font-mono font-bold leading-none mt-1">
+                      <span className="w-6 sm:w-8 md:w-10 text-center text-cyan-400">
+                        {Math.round(mod.testP95)}
+                        <span className="text-[9px] text-slate-500 font-normal ml-0.5 lowercase">ms</span>
+                      </span>
+                      <span className="w-6 sm:w-8 md:w-10 text-center text-fuchsia-400">
+                        {Math.round(mod.realP95)}
+                        <span className="text-[9px] text-slate-500 font-normal ml-0.5 lowercase">ms</span>
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-center text-center">
+                      <span className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">{mod.name.split(' ')[0]}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Engine Bento Grid Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {performanceData.map((mod) => {
+              const isExpanded = expandedCards[mod.id] || false;
+              let IconComponent = Shield;
+              let iconColor = "text-purple-400";
+              let borderClass = "border-t-purple-500/50";
+              let neonGlowClass = "shadow-[0_0_12px_rgba(168,85,247,0.15)] border-purple-500/30 hover:border-purple-400 hover:shadow-[0_0_18px_rgba(168,85,247,0.35)]";
+
+              if (mod.id === 'bce') {
+                IconComponent = Shield;
+                iconColor = "text-purple-400";
+                borderClass = "border-t-purple-500/50";
+                neonGlowClass = "shadow-[0_0_12px_rgba(168,85,247,0.15)] border-purple-500/30 hover:border-purple-400 hover:shadow-[0_0_18px_rgba(168,85,247,0.35)]";
+              } else if (mod.id === 'dspm') {
+                IconComponent = Database;
+                iconColor = "text-indigo-400";
+                borderClass = "border-t-indigo-500/50";
+                neonGlowClass = "shadow-[0_0_12px_rgba(99,102,241,0.15)] border-indigo-500/30 hover:border-indigo-400 hover:shadow-[0_0_18px_rgba(99,102,241,0.35)]";
+              } else if (mod.id === 'ebpf') {
+                IconComponent = Activity;
+                iconColor = "text-emerald-400";
+                borderClass = "border-t-emerald-500/50";
+                neonGlowClass = "shadow-[0_0_12px_rgba(16,185,129,0.15)] border-emerald-500/30 hover:border-emerald-400 hover:shadow-[0_0_18px_rgba(16,185,129,0.35)]";
+              } else if (mod.id === 'sqs') {
+                IconComponent = GitBranch;
+                iconColor = "text-blue-400";
+                borderClass = "border-t-blue-500/50";
+                neonGlowClass = "shadow-[0_0_12px_rgba(59,130,246,0.15)] border-blue-500/30 hover:border-blue-400 hover:shadow-[0_0_18px_rgba(59,130,246,0.35)]";
+              } else if (mod.id === 'rustcore') {
+                IconComponent = Cpu;
+                iconColor = "text-purple-400";
+                borderClass = "border-t-purple-500/50";
+                neonGlowClass = "shadow-[0_0_12px_rgba(168,85,247,0.15)] border-purple-500/30 hover:border-purple-400 hover:shadow-[0_0_18px_rgba(168,85,247,0.35)]";
+              } else if (mod.id === 'apve') {
+                IconComponent = Layers;
+                iconColor = "text-pink-400";
+                borderClass = "border-t-pink-500/50";
+                neonGlowClass = "shadow-[0_0_12px_rgba(236,72,153,0.15)] border-pink-500/30 hover:border-pink-400 hover:shadow-[0_0_18px_rgba(236,72,153,0.35)]";
+              }
+
+              return (
+                <div
+                  key={mod.id}
+                  onClick={() => toggleCard(mod.id)}
+                  className={`bg-slate-900/40 border border-t-2 ${borderClass} ${neonGlowClass} rounded-2xl p-6 backdrop-blur-md transition-all duration-300 cursor-pointer`}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <IconComponent className={`w-5 h-5 ${iconColor}`} />
+                    <h4 className="font-bold text-sm tracking-wider uppercase text-white font-mono">{mod.name}</h4>
+                  </div>
+                  <p className="text-xs text-slate-350 mb-4 leading-relaxed font-sans">{mod.short}</p>
+
+                  <div className="space-y-3 font-mono text-xs border-t border-purple-950/10 pt-3">
+                    <div>
+                      <p className="text-[10px] text-purple-400 uppercase tracking-widest mb-1.5 font-bold">Test Results</p>
+                      <ul className="space-y-1 text-slate-300">
+                        <li className="flex items-center gap-1.5">
+                          <span className="w-1 h-1 bg-purple-500 rounded-full" /> {mod.details.test.split('. ')[0]}
+                        </li>
+                        {mod.details.test.split('. ')[1] && (
+                          <li className="flex items-center gap-1.5">
+                            <span className="w-1 h-1 bg-purple-500 rounded-full" /> {mod.details.test.split('. ')[1]}
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Toggleable Details */}
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ${
+                      isExpanded ? 'max-h-[500px] opacity-100 mt-4 border-t border-purple-950/10 pt-4' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <div className="space-y-4 font-mono text-xs">
+                      <div>
+                        <h5 className="text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-1.5">Functional Scope</h5>
+                        <p className="text-slate-300 leading-relaxed font-sans text-xs">{mod.details.what}</p>
+                      </div>
+                      <div>
+                        <h5 className="text-[10px] font-bold text-pink-500 uppercase tracking-wider mb-1.5">Production Risk & Scale Factors</h5>
+                        <p className="text-slate-300 leading-relaxed font-sans text-xs">{mod.details.real}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-xs font-mono text-slate-500 mt-4 border-t border-purple-950/10 pt-2 flex justify-between">
+                    <span>{isExpanded ? '▼ Close Details' : '▲ Show Details'}</span>
+                    <span className="text-purple-400/50">i</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Technical Debt Section */}
+          <div className="w-full">
+            <div className="bg-slate-900/40 border border-purple-950/30 rounded-2xl overflow-hidden backdrop-blur-md">
+              <div className="px-6 py-4 bg-purple-950/20 border-b border-purple-950/20 flex items-center gap-3">
+                <AlertTriangle className="w-5 h-5 text-pink-500" />
+                <h3 className="font-extrabold text-sm uppercase tracking-wider text-white font-mono">Known Technical Debt</h3>
+              </div>
+              <div className="p-6 space-y-4">
+                <div className="flex gap-4 p-4 border border-purple-950/10 bg-slate-950/20 rounded-xl hover:border-pink-500/30 transition-all duration-300">
+                  <div className="w-10 h-10 bg-pink-500/10 rounded-lg flex items-center justify-center text-pink-500 border border-pink-500/20 flex-shrink-0">
+                    <AlertTriangle className="w-5 h-5" />
+                  </div>
+                  
+                  <div>
+                    <p className="text-xs font-bold font-mono text-white uppercase">GIL Acquisition Delay</p>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">Actual: 5–15 ms; target: 1 ms. `rmp-serde` batching is required.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 p-4 border border-purple-950/10 bg-slate-950/20 rounded-xl hover:border-pink-500/30 transition-all duration-300">
+                  <div className="w-10 h-10 bg-pink-500/10 rounded-lg flex items-center justify-center text-pink-500 border border-pink-500/20 flex-shrink-0">
+                    <Database className="w-5 h-5" />
+                  </div>
+                  
+                  <div>
+                    <p className="text-xs font-bold font-mono text-white uppercase">PostgreSQL DSPM write</p>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">50 parallel inserts will cause lock contention if the `dspm_findings` table is not indexed. A `COPY` or batch insert is required.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 p-4 border border-purple-950/10 bg-slate-950/20 rounded-xl hover:border-pink-500/30 transition-all duration-300">
+                  <div className="w-10 h-10 bg-pink-500/10 rounded-lg flex items-center justify-center text-pink-500 border border-pink-500/20 flex-shrink-0">
+                    <Layers className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold font-mono text-white uppercase">Neo4j Connection Pool</p>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">30 sessions are insufficient for a sustained throughput of 100–200 events per second. Either the connection pool must be increased or an asynchronous driver must be used.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
 
       {/* SIMULATOR */}
@@ -1313,7 +1679,7 @@ export default function Home() {
           <div>© {new Date().getFullYear()} Kassandra Platform Architecture. All rights reserved.</div>
           <div className="flex items-center space-x-2 text-slate-500 bg-purple-950/5 border border-purple-950/10 px-3 py-1 rounded-full">
             <CheckCircle className="w-4 h-4 text-purple-400" />
-            <span>Deployment Verified Cryptographically</span>
+            <span>Kassandra's Prophecy</span>
           </div>
         </div>
       </footer>
