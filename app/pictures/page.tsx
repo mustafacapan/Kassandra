@@ -81,7 +81,6 @@ const MODULES_DATA: ModuleCategory[] = [
     icon: Brain,
     images: [
       { src: "/modules/for-CYBER_AI_ANALYST/capture_2026-06-23_004947.png", alt: "AI-driven attack path analysis and automated remediation. Powered by local Ollama & Llama 3.", label: "CYBER AI PATH ANALYST" },
-      { src: "/modules/for-CYBER_AI_ANALYST/capture_2026-06-23_005001.png", alt: "Audit logic chatbot interface generating step-by-step mitigation details.", label: "AI AUDIT LOG CHAT ASSISTANT" }
     ]
   },
   {
