@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Briefcase, Terminal, X } from "lucide-react";
+import { renderCustomMarkdown } from "../lib/markdown";
 
 interface DetailsModalProps {
   activeModal: any;
@@ -17,6 +21,8 @@ export default function DetailsModal({
   switchView,
 }: DetailsModalProps) {
   if (!activeModal) return null;
+
+  const isCustomRoadmap = activeModal.id === "my-custom-feature";
 
   return (
     <AnimatePresence>
@@ -53,10 +59,16 @@ export default function DetailsModal({
           </div>
 
           {activeModal.isDataFlow ? (
-            <div className="bg-slate-900/60 border border-purple-950/30 rounded-xl p-6">
+            <div className="bg-slate-900/60 border border-purple-955/30 rounded-xl p-6">
               <p className="text-slate-300 text-base leading-relaxed font-light">
                 {activeModal.technical}
               </p>
+            </div>
+          ) : isCustomRoadmap ? (
+            /* AWS platform roadmap layout - Single unified view without tabs */
+            <div className="bg-slate-900/60 border border-purple-955/20 rounded-xl p-6 space-y-6">
+              {renderCustomMarkdown(activeModal.business)}
+              {renderCustomMarkdown(activeModal.technical)}
             </div>
           ) : (
             <div className="space-y-4">
@@ -79,17 +91,17 @@ export default function DetailsModal({
                     className={`px-4 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
                       activeModal.view === "business"
                         ? "bg-indigo-600/30 border border-indigo-400/50 text-indigo-300"
-                        : "bg-slate-900/50 border border-purple-950/30 text-slate-500 hover:text-slate-300"
+                        : "bg-slate-900/50 border border-purple-955/30 text-slate-500 hover:text-slate-300"
                     }`}
                   >
-                    CEO / CISO View
+                    Overview
                   </button>
                   <button
                     onClick={() => switchView("technical")}
                     className={`px-4 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
                       activeModal.view === "technical"
                         ? "bg-purple-600/30 border border-purple-400/50 text-purple-300"
-                        : "bg-slate-900/50 border border-purple-950/30 text-slate-500 hover:text-slate-300"
+                        : "bg-slate-900/50 border border-purple-955/30 text-slate-500 hover:text-slate-300"
                     }`}
                   >
                     Technical Engineering View
@@ -103,14 +115,14 @@ export default function DetailsModal({
                     <div className="bg-indigo-950/20 border border-indigo-900/30 rounded-xl p-6">
                       <h4 className="text-xs font-mono font-black text-indigo-400 uppercase tracking-wider mb-3 flex items-center space-x-2">
                         <Briefcase className="w-3.5 h-3.5" />
-                        <span>CEO / CISO Executive Summary</span>
+                        <span>Overview</span>
                       </h4>
                       <div className="text-slate-200 text-sm leading-relaxed font-medium whitespace-pre-line">
                         {campaignsView === "campaigns" ? activeModal.business_campaigns : activeModal.business_threat_intel}
                       </div>
                     </div>
                   ) : (
-                    <div className="bg-slate-900/60 border border-purple-950/30 rounded-xl p-6">
+                    <div className="bg-slate-900/60 border border-purple-955/30 rounded-xl p-6">
                       <h4 className="text-xs font-mono font-black text-purple-400 uppercase tracking-wider mb-3 flex items-center space-x-2">
                         <Terminal className="w-3.5 h-3.5" />
                         <span>Technical Engineering View</span>
@@ -125,14 +137,14 @@ export default function DetailsModal({
                     <div className="bg-indigo-950/20 border border-indigo-900/30 rounded-xl p-6">
                       <h4 className="text-xs font-mono font-black text-indigo-400 uppercase tracking-wider mb-3 flex items-center space-x-2">
                         <Briefcase className="w-3.5 h-3.5" />
-                        <span>CEO / CISO Executive Summary</span>
+                        <span>Overview</span>
                       </h4>
                       <div className="text-slate-200 text-sm leading-relaxed font-medium whitespace-pre-line">
                         {activeModal.business}
                       </div>
                     </div>
                   ) : (
-                    <div className="bg-slate-900/60 border border-purple-950/30 rounded-xl p-6">
+                    <div className="bg-slate-900/60 border border-purple-955/30 rounded-xl p-6">
                       <h4 className="text-xs font-mono font-black text-purple-400 uppercase tracking-wider mb-3 flex items-center space-x-2">
                         <Terminal className="w-3.5 h-3.5" />
                         <span>Technical Engineering View</span>

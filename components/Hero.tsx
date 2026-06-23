@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Terminal, Play } from "lucide-react";
+import { Terminal, Play, Image as ImageIcon } from "lucide-react";
+import Link from "next/link";
 
 interface HeroProps {
   heroIndex: number;
@@ -34,17 +35,24 @@ export default function Hero({ heroIndex, heroTexts }: HeroProps) {
         Kassandra is an enterprise-grade CNAPP platform designed to map complex, multi-account cloud infrastructures into real-time directed graphs. By executing sub-millisecond path analysis and identifying tactical choke points, it isolates critical exposure and eliminates alert fatigue.
       </p>
 
-      <div className="flex flex-wrap gap-4 mb-8">
+      <div className="flex flex-col gap-3.5 mb-8 w-fit">
         <a
           href="#simulator-section"
-          className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs px-6 py-4 rounded-xl transition-all shadow-xl shadow-indigo-600/10 flex items-center justify-center space-x-2 group"
+          className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs px-6 py-4 rounded-xl transition-all shadow-xl shadow-indigo-600/10 flex items-center justify-center space-x-2 group w-full"
         >
           <span>Launch Live Threat Simulator</span>
           <Play className="w-3.5 h-3.5 text-indigo-400" />
         </a>
+        <Link
+          href="/pictures"
+          className="bg-slate-900/60 hover:bg-slate-800/80 text-slate-300 hover:text-white border border-purple-900/30 hover:border-purple-500/40 font-bold text-xs px-6 py-3.5 rounded-xl transition-all flex items-center justify-center space-x-2 w-full group shadow-md"
+        >
+          <ImageIcon className="w-3.5 h-3.5 text-purple-400" />
+          <span>View Platform Pictures / Sandbox</span>
+        </Link>
       </div>
 
-      <div className="border-t border-purple-950/25 pt-6 space-y-4 text-xs font-mono text-slate-400">
+      <div className="border-t border-purple-955/25 pt-6 space-y-4 text-xs font-mono text-slate-400">
         <div className="flex items-start space-x-3">
           <span className="text-purple-400 font-bold bg-purple-950/40 border border-purple-900/30 px-2 py-0.5 rounded text-[10px] min-w-[90px] text-center">// SYSTEM</span>
           <span className="leading-relaxed text-slate-300 font-bold">Consolidates alerting noise loops by 95% using multi-hop graph pruning.</span>
