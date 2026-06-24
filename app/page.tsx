@@ -57,7 +57,7 @@ export default function Home() {
   const [heroIndex, setHeroIndex] = useState(0);
   const heroTexts = [
     { line1: "Turn 1,000 Cloud Alerts", line2: "Into 1 Strategic Action" },
-    { line1: "Expose Hidden Attack Paths", line2: "Across Multi-Account Clouds" },
+    { line1: "With Roadmap Integration for Automated", line2: "Multi-Cloud & Multi-Account Environments" },
     { line1: "Transform Kernel Telemetry", line2: "Into Instant eBPF Blocks" }
   ];
 
@@ -961,7 +961,7 @@ const performanceData = [
             <span className="text-xs font-mono uppercase tracking-widest text-purple-400 block mb-2">// FUTURE ROADMAP</span>
             <h2 className="text-3xl font-black text-white tracking-tight">Upcoming Capabilities</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {futureModules.map((item) => {
               const Icon = item.icon;
               

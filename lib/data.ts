@@ -501,9 +501,43 @@ We are not claiming this is built. We are claiming we have done the architectura
 ## 8. Closing Note
 
 We are sharing this roadmap not as a finished product claim, but as evidence of the depth of planning behind our next development phase. The architecture has been deliberately designed, reviewed, and stress-tested on paper — including its own weaknesses — before a single production line of this specific pipeline is written. We believe that is exactly the kind of technical seriousness this credit is meant to support.`,
-    technical: ``,
     icon: Rocket,
     color: "blue",
+  },
+  {
+    id: "multi-cloud",
+    tag: "MULTI_CLOUD_ROADMAP",
+    title: "Multi-Cloud Security Posture Management",
+    short: "Unified cross-cloud compliance, threat telemetry, and security graphs for Azure and GCP, alongside advanced AWS telemetry enhancements.",
+    business: `**CEO / CISO Executive Summary**
+Kassandra is expanding from deep AWS infrastructure auditing into a comprehensive, multi-cloud cyber-defense suite. The upcoming module integrates Microsoft Azure and Google Cloud Platform (GCP) into a single, unified security cockpit.
+
+**Integration Scope & Strategy:**
+- **Microsoft Azure Integration:** Subscription-level resource graph mapping, Entra ID (Active Directory) role relationship modeling, and storage compliance tracking.
+- **Google Cloud Platform (GCP) Integration:** GKE (Google Kubernetes Engine) eBPF runtime capture, GCP IAM permission analyzer, and Cloud Storage posture tracking.
+- **AWS Platform Optimization:** Deeper eBPF observability, automated IAM session containment, and real-time AWS API security group remediation.
+
+**Business Value:**
+- **Single Pane of Glass:** A unified dashboard for multi-cloud data compliance, threat telemetry, and attack path simulations.
+- **Standardized Risk Metric:** Translates platform-specific permissions into a unified cross-cloud attack graph to eliminate cloud silos.`,
+    technical: `**Technical Engineering View**
+The Multi-Cloud integration establishes cloud-agnostic data normalization layers running on local and collective planes:
+
+**1. Microsoft Azure Connector**
+- Queries Azure Resource Graph (ARG) for subscription-wide assets.
+- Map Role-Based Access Control (RBAC) relationships from Entra ID into the unified Neo4j security graph.
+- Streams Event Hubs telemetry logs to Kassandra's normalized event stream.
+
+**2. Google Cloud Platform (GCP) Connector**
+- Ingests GCP asset configuration trees using Cloud Asset Inventory APIs.
+- Captures runtime container syscalls on GKE hosts via eBPF probes.
+- Normalizes Cloud Audit logs streamed through Cloud Pub/Sub topics.
+
+**3. AWS Engine Enhancements**
+- Introduces real-time remediation tasks using AWS SDK for Go.
+- Integrates VPC Flow Logs directly with eBPF metrics for packet-level connection tracing.`,
+    icon: Globe,
+    color: "emerald",
   }
 ];
 
