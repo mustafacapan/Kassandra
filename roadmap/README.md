@@ -1,17 +1,10 @@
-# Roadmap
+# Hi, I'm Mustafa Çapan 👋
+### Cloud Security Researcher & Developer | Creator of Kassandra
 
-This directory contains the project roadmap and planned features for Kassandra Cloud Security Platform.
+I am a Computer Programming student and an independent Cloud Security Researcher focused on building next-generation defense systems. Currently, I am developing **Kassandra**, an advanced Cloud-Native Application Protection Platform (CNAPP) and Data Security Posture Management (DSPM) tool.
 
-## Overview
+- 🛡️ **Core Focus:** Cloud Infrastructure Security, Automation, and Observability.
+- 🚀 **Tech Stack:** eBPF (Tetragon), Neo4j Graph Databases, Linux Kernel, and Local LLM Security Analytics.
 
-This roadmap outlines our vision and planned developments for the Kassandra platform.
-
-## Sections
-
-- **Features**: Planned features and enhancements
-- **Milestones**: Key development milestones
-- **Timeline**: Expected delivery dates
-
----
-
-*Last updated: 2026-06-24*
+- İ will plan to share news here about Kassandra.
+- 
