@@ -914,7 +914,7 @@ const performanceData = [
         {/* SECTION 3: DATA FLOW (Data Flow Hierarchy) */}
         <section className="mb-20 pt-16 border-t border-purple-950/10">
           <div className="text-center mb-10">
-            <span className="text-xs font-mono uppercase tracking-widest text-purple-400 block mb-2">// DATA FLOW HIERARCHY</span>
+            <span className="text-xs font-mono uppercase tracking-widest text-purple-400 block mb-2">// DATA FLOW HIERARCHY (GCP/Azure integration in beta)</span>
             <h2 className="text-3xl font-black text-white tracking-tight">Data Ingest & Analysis Pipelines</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -1005,7 +1005,7 @@ const performanceData = [
         {/* YENİ: PERFORMANCE BENCHMARK SECTION */}
         <section className="mb-20 pt-16 border-t border-purple-950/10">
           <div className="text-center mb-10">
-            <span className="text-xs font-mono uppercase tracking-widest text-purple-400 block mb-2">// Synthetıc and Productıon Results</span>
+            <span className="text-xs font-mono uppercase tracking-widest text-purple-400 block mb-2">// Synthetic and Production Results</span>
             <h2 className="text-3xl font-black text-white tracking-tight">Performance Comparison: Lab vs Production</h2>
           </div>
 
@@ -1016,7 +1016,7 @@ const performanceData = [
                 <Terminal className="w-24 h-24 text-purple-400" />
               </div>
               <div className="z-10">
-                <h3 className="text-purple-400/60 font-mono text-[9px] uppercase tracking-[0.3em] mb-2">Total System Executıon</h3>
+                <h3 className="text-purple-400/60 font-mono text-[9px] uppercase tracking-[0.3em] mb-2">Total System Execution</h3>
                 <div className="flex flex-wrap gap-6 sm:gap-12">
                   <div>
                     <span className="text-2xl sm:text-3xl font-extrabold font-mono text-purple-400 text-glow-cyan block">11s</span>
@@ -1024,7 +1024,7 @@ const performanceData = [
                   </div>
                   <div>
                     <span className="text-2xl sm:text-3xl font-extrabold font-mono text-pink-500 text-glow-pink block">60-120s</span>
-                    <span className="text-[9px] text-pink-500/50 font-mono uppercase tracking-wider">REAL-WORLD REST</span>
+                    <span className="text-[9px] text-pink-500/50 font-mono uppercase tracking-wider">REAL-WORLD EST</span>
                   </div>
                 </div>
               </div>
@@ -1054,7 +1054,7 @@ const performanceData = [
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
               <div>
                 <h3 className="font-extrabold text-lg text-white uppercase tracking-wider">Delay View</h3>
-                <p className="text-slate-400 text-xs font-mono uppercase tracking-widest mt-1">Synthetıc and Productıon</p>
+                <p className="text-slate-400 text-xs font-mono uppercase tracking-widest mt-1">Synthetic and Production</p>
               </div>
               <div className="flex gap-6">
                 <div className="flex items-center gap-2.5">
@@ -1332,7 +1332,18 @@ const performanceData = [
                 </div>
                 <div ref={logContainerRef} className="font-mono text-xs text-slate-400 space-y-2.5 h-[260px] overflow-y-auto pr-2">
                   {logs.length === 0 ? (
-                    <div className="text-slate-600 italic">Console idle. Awaiting configuration burst execution...</div>
+                    <div className="space-y-4">
+                      <div className="text-slate-600 italic">Console idle. Awaiting configuration burst execution...</div>
+                      <div className="bg-purple-950/20 border border-purple-500/20 rounded-xl p-3.5 mt-2">
+                        <span className="text-[10px] uppercase font-bold text-purple-400 tracking-wider block mb-1">Scenario Target:</span>
+                        <p className="text-xs text-slate-350 leading-relaxed font-sans">
+                          {selectedScenario === "shadow_ai" && "Simulates an attacker compromising a developer role, deploying an unauthorized SageMaker container, and executing a reverse bash shell."}
+                          {selectedScenario === "ransomware" && "Simulates the exposure of unencrypted PII/KVKK customer data on S3 and the subsequent containment via an automated Deny-All bucket policy."}
+                          {selectedScenario === "cross_account" && "Simulates an IAM privilege escalation exploit via CreatePolicyVersion pivoting into corporate workloads, resolved by SCP."}
+                          {selectedScenario === "insider_leak" && "Simulates an authorized administrator copying active credentials to a personal device, trigger key rotations, and eBPF kernel blocks."}
+                        </p>
+                      </div>
+                    </div>
                   ) : (
                     logs.map((log, i) => (
                       <div

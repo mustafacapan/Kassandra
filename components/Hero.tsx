@@ -63,7 +63,7 @@ export default function Hero({ heroIndex, heroTexts }: HeroProps) {
         </div>
         <div className="flex items-start space-x-3">
           <span className="text-cyan-400 font-bold bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded text-[10px] min-w-[90px] text-center">// STREAM</span>
-          <span className="leading-relaxed text-slate-300 font-bold">Processes continuous AWS CloudTrail and eBPF events with sub-second ingestion latency.</span>
+          <span className="leading-relaxed text-slate-300 font-bold">Processes continuous AWS CloudTrail and eBPF events with sub-second ingestion latency (GCP/Azure integration in beta).</span>
         </div>
       </div>
     </div>

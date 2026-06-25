@@ -548,9 +548,9 @@ The Multi-Cloud integration establishes cloud-agnostic data normalization layers
 export const dataFlowModules = [
   {
     id: "df-1",
-    title: "Raw Ingestion & Events Capture",
+    title: "Raw Ingestion, PII Auditing & Events Capture",
     description:
-      "Captures real-time syscall events (execve, connect) via Cilium Tetragon eBPF probes on container hosts, side-by-side with AWS CloudTrail configuration drift event logs.",
+      "Captures real-time syscall events (execve, connect) via Cilium Tetragon eBPF probes alongside CloudTrail. Performs immediate data sanitization, TCKN/MIME/CC-PAN detection, and masking at the gateway before queueing.",
     icon: Radio,
     color: "indigo",
   },
@@ -558,7 +558,7 @@ export const dataFlowModules = [
     id: "df-2",
     title: "Transport & Buffering (SQS / DLQ)",
     description:
-      "Streams high-velocity telemetry through Redis Streams (kassandra:discovery:stream) and buffers events in AWS SQS with Dead-Letter Queue (DLQ) backpressure fallback.",
+      "Streams already-sanitized, anonymized high-velocity telemetry through Redis Streams (kassandra:discovery:stream) and buffers events in AWS SQS with Dead-Letter Queue (DLQ) backpressure fallback.",
     icon: Workflow,
     color: "purple",
   },
@@ -566,7 +566,7 @@ export const dataFlowModules = [
     id: "df-3",
     title: "Normalization & Columnar Parsing",
     description:
-      "Transforms unstructured JSON logs into a unified resource model. Uses a Rust-accelerated Apache Arrow parser for zero-copy memory layout and fast Go preprocessing.",
+      "Transforms unstructured, masked JSON logs into a unified resource model. Uses a Rust-accelerated Apache Arrow parser for zero-copy memory layout and fast Go preprocessing.",
     icon: Layers,
     color: "fuchsia",
   },

@@ -61,7 +61,7 @@ const MODULES_DATA: ModuleCategory[] = [
   {
     id: "choke-points",
     title: "Choke Points",
-    status: "Under Development",
+    status: "Private Beta",
     description: "High-ROI mathematical centrality calculation that identifies single points of maximum security exposure.",
     color: "amber",
     glowColor: "rgba(245, 158, 11, 0.4)",
@@ -102,7 +102,7 @@ const MODULES_DATA: ModuleCategory[] = [
   {
     id: "ebpf",
     title: "eBPF Sensor",
-    status: "Under Development",
+    status: "Private Beta",
     description: "Kernel-level system call auditing and real-time egress network filtering at container layers.",
     color: "cyan",
     glowColor: "rgba(6, 182, 212, 0.4)",
@@ -260,9 +260,10 @@ export default function PicturesPage() {
         </div>
 
         {/* Informational Compliance Footer Disclaimer - Centered & Corrected */}
-        <div className="mt-20 max-w-4xl mx-auto p-6 rounded-xl bg-slate-900/20 border border-purple-955/20 text-center">
-          <p className="text-[10px] font-mono text-slate-500 leading-relaxed max-w-3xl mx-auto">
-            <strong>Disclaimer:</strong> The environments displayed below represent simulated global corporate infrastructures.
+        <div className="mt-20 max-w-4xl mx-auto p-8 rounded-2xl bg-slate-900/60 border-2 border-purple-500/40 text-center shadow-[0_0_25px_rgba(168,85,247,0.15)] backdrop-blur-md">
+          <p className="text-xs font-mono text-slate-200 leading-relaxed max-w-3xl mx-auto">
+            <strong className="text-purple-400 uppercase tracking-wider block mb-2 font-black">// Disclaimer & Sanitization Framework //</strong>
+            The environments displayed below represent simulated global corporate infrastructures.
             In accordance with strict compliance frameworks (including GDPR, KVKK, and PCI-DSS), all sensitive operational vectors, resource names (kassandra-mock-*, etc...),
             and identities have been sanitized and replaced with dummy variables to demonstrate Kassandra's enterprise posture management without compromising infrastructure security.
           </p>
