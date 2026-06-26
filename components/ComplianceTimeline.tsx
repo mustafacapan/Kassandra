@@ -296,7 +296,7 @@ export default function ComplianceTimeline({
             <div className={`transition-opacity duration-300 ${isActuationActive ? "opacity-100" : "opacity-40"}`}>
               <h5 className={`text-[10px] font-bold ${isActuationActive ? "text-purple-400" : "text-slate-500"}`}>[STATE: ACTUATION ACTIVE]</h5>
               <p className="text-[9.5px] text-slate-400 leading-relaxed font-sans mt-0.5">
-                [AUTONOMOUS ACTUATION] Kassandra Engine enforcing local OPA bundle guards. Injecting automated mitigation playbooks.
+                [AUTONOMOUS ACTUATION] Kassandra Prophecy Engine enforcing local OPA bundle guards. Injecting automated mitigation playbooks.
               </p>
 
               {/* IaC Baseline Sandbox Progress Validation */}

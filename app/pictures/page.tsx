@@ -136,7 +136,7 @@ const MODULES_DATA: ModuleCategory[] = [
       { src: "/modules/for-APVE/capture_2026-06-23_025706.png", alt: "Eliminating false positives via automated validation.", label: "ATTACK PATH VALIDATION ENGINE" },
       { src: "/modules/for-SURFACE_MAP/capture_2026-06-23_004513.png", alt: "Context-aware data risk assessment and financial impact.", label: "DSPM & BCE DATA PROTECTION" },
       { src: "/modules/for-SURFACE_MAP/capture_2026-06-23_004523.png", alt: "Context-aware data risk assessment and financial impact.", label: "DSPM & BCE DATA PROTECTION" },
-      { src: "/modules/for-SURFACE_MAP/capture_2026-06-23_153238.png", alt: "Attack Path View And Kassandra's Dashboard", label: "Surface Map (Attack Path Viewer)" },
+      { src: "/modules/for-SURFACE_MAP/capture_2026-06-23_153238.png", alt: "Attack Path View And Kassandra Prophecy Dashboard", label: "Surface Map (Attack Path Viewer)" },
       { src: "/modules/for-SURFACE_MAP/capture_2026-06-23_153321.png", alt: "-Security findings and remediation recommendations, What-İf Simulator", label: "Surface Map (Attack Path Viewer)" }
     ]
   }
@@ -209,7 +209,7 @@ export default function PicturesPage() {
 
         {/* Heading */}
         <div className="text-center mb-16">
-          <span className="text-xs font-mono uppercase tracking-widest text-purple-400 block mb-2">// KASSANDRA SECURE CONSOLES</span>
+          <span className="text-xs font-mono uppercase tracking-widest text-purple-400 block mb-2">// KASSANDRA PROPHECY SECURE CONSOLES</span>
           <h1 className="text-4xl lg:text-5xl font-black tracking-tight text-white">Module Screenshots & Telemetry Screens</h1>
           <p className="text-slate-400 max-w-2xl mx-auto mt-4 text-xs font-light leading-relaxed">
             Live views, runtime state machines, and DSPM analysis dashboards captured directly from running environments.
@@ -264,8 +264,8 @@ export default function PicturesPage() {
           <p className="text-xs font-mono text-slate-200 leading-relaxed max-w-3xl mx-auto">
             <strong className="text-purple-400 uppercase tracking-wider block mb-2 font-black">// Disclaimer & Sanitization Framework //</strong>
             The environments displayed below represent simulated global corporate infrastructures.
-            In accordance with strict compliance frameworks (including GDPR, KVKK, and PCI-DSS), all sensitive operational vectors, resource names (kassandra-mock-*, etc...),
-            and identities have been sanitized and replaced with dummy variables to demonstrate Kassandra's enterprise posture management without compromising infrastructure security.
+            In accordance with strict compliance frameworks (including GDPR, KVKK, and PCI-DSS), all sensitive operational vectors, resource names (kassandra-prophecy-mock-*, etc...),
+            and identities have been sanitized and replaced with dummy variables to demonstrate Kassandra Prophecy's enterprise posture management without compromising infrastructure security.
           </p>
         </div>
       </main>

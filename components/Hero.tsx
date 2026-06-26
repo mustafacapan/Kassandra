@@ -32,7 +32,7 @@ export default function Hero({ heroIndex, heroTexts }: HeroProps) {
       </h1>
 
       <p className="text-slate-300 text-base leading-relaxed font-light mb-8 max-w-lg">
-        Kassandra is an enterprise-grade CNAPP platform designed to map complex, multi-account cloud infrastructures into real-time directed graphs. By executing sub-millisecond path analysis and identifying tactical choke points, it isolates critical exposure and eliminates alert fatigue.
+        Kassandra Prophecy is an enterprise-grade CNAPP platform designed to map complex, multi-account cloud infrastructures into real-time directed graphs. By executing sub-millisecond path analysis and identifying tactical choke points, it isolates critical exposure and eliminates alert fatigue.
       </p>
 
       <div className="flex flex-col gap-3.5 mb-8 w-fit">

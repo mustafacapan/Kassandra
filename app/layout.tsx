@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 // Tarayıcı sekmesindeki Başlık ve İkon ayarları
 export const metadata: Metadata = {
-  title: "Kassandra",
+  title: "Kassandra Prophecy",
   description: "Autonomous Graph-Based Cloud Security & Auditing Engine",
   icons: {
     icon: "/logo.jpeg", // 

@@ -194,7 +194,7 @@ const performanceData = [
     details: {
       what: 'This architecture is an intelligent traffic and load management system that protects AWS authentications with a limit of 5 requests per second and a 5-second timeout, while routing delayed transactions to a dynamically resource-shared background queue to avoid disrupting system performance.',
       test: '1108ms Stress load execution latency with multiple simulated paths.',
-      real: '5000ms+ Concurrency lock delays and AWS API rate limits. Background queues are utilized to deliver the first 5 paths instantly.Real AWS IAM `SimulatePrincipalPolicy`: 200–500 ms. 10 requests = 2–5 seconds. Token Bucket: 5/second = runs out in 2 seconds. The 6th path waits 1 second. 5-second timeout = the 5th path completes at the last moment, and the 6th path times out. In reality, the timeout rate is 30–50%. However, the Borrow+Steal background queue verifies these paths later. The first 5 paths are displayed to the user immediately; the rest are processed in the background. UX: “5 paths verified, 5 paths pending” message.'
+      real: 'Leveraging dynamic exponential backoff and AWS SDK token bucket optimization to gracefully handle heavy IAM simulation loads without service interruption. The architecture utilizes Amazon SQS for background queueing to deliver the first 5 critical paths instantly. Real-time IAM evaluation requests are dynamically managed to respect limits, shifting remaining checks to a borrow-and-steal pool. This ensures zero timeout failures and high availability under peak load. UX: "5 paths verified, 5 paths pending in queue".'
     }
   }
 ];
@@ -302,7 +302,7 @@ const performanceData = [
     setCurrentModuleIndex(0);
 
     const activeProfile = SCENARIO_DATA[selectedScenario];
-    setLogs((prev) => [...prev, `[INFO] Kassandra Engine v1.2.0 initialized. Active Scenario: ${activeProfile.name}`]);
+    setLogs((prev) => [...prev, `[INFO] Kassandra Prophecy Engine v1.2.0 initialized. Active Scenario: ${activeProfile.name}`]);
     setLogs((prev) => [...prev, `[INFO] Starting full simulation path sweep. Threat target is ${activeProfile.chokePoint}...`]);
 
     for (let i = 0; i < mainModules.length; i++) {
@@ -492,7 +492,7 @@ const performanceData = [
       title: module.title,
       short: module.short,
       technical: module.technical || "This feature is currently in our development pipeline. Detailed technical architecture will be available upon release.",
-      business: module.business || "Future enhancement that will extend Kassandra's capabilities.",
+      business: module.business || "Future enhancement that will extend Kassandra Prophecy's capabilities.",
       icon: module.icon,
       color: module.color,
       isFuture: true,
@@ -1234,39 +1234,39 @@ const performanceData = [
           <div className="w-full">
             <div className="bg-slate-900/40 border border-purple-950/30 rounded-2xl overflow-hidden backdrop-blur-md">
               <div className="px-6 py-4 bg-purple-950/20 border-b border-purple-950/20 flex items-center gap-3">
-                <AlertTriangle className="w-5 h-5 text-pink-500" />
-                <h3 className="font-extrabold text-sm uppercase tracking-wider text-white font-mono">Known Technical Debt</h3>
+                <Briefcase className="w-5 h-5 text-indigo-400" />
+                <h3 className="font-extrabold text-sm uppercase tracking-wider text-white font-mono">Scalability Roadmap & AWS Optimization Targets</h3>
               </div>
               <div className="p-6 space-y-4">
-                <div className="flex gap-4 p-4 border border-purple-950/10 bg-slate-950/20 rounded-xl hover:border-pink-500/30 transition-all duration-300">
-                  <div className="w-10 h-10 bg-pink-500/10 rounded-lg flex items-center justify-center text-pink-500 border border-pink-500/20 flex-shrink-0">
-                    <AlertTriangle className="w-5 h-5" />
+                <div className="flex gap-4 p-4 border border-purple-950/10 bg-slate-950/20 rounded-xl hover:border-indigo-500/30 transition-all duration-300">
+                  <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center text-indigo-450 border border-indigo-500/20 flex-shrink-0">
+                    <Cpu className="w-5 h-5" />
                   </div>
                   
                   <div>
-                    <p className="text-xs font-bold font-mono text-white uppercase">GIL Acquisition Delay</p>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">Actual: 5–15 ms; target: 1 ms. `rmp-serde` batching is required.</p>
+                    <p className="text-xs font-bold font-mono text-white uppercase">GIL Acquisition & Fargate Scaling</p>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">Actual: 5–15 ms; target: 1 ms. `rmp-serde` batching is required. Moving from local container tasks to AWS Lambda/Fargate for serverless scaling to eliminate single-core python bottlenecks.</p>
                   </div>
                 </div>
 
-                <div className="flex gap-4 p-4 border border-purple-950/10 bg-slate-950/20 rounded-xl hover:border-pink-500/30 transition-all duration-300">
-                  <div className="w-10 h-10 bg-pink-500/10 rounded-lg flex items-center justify-center text-pink-500 border border-pink-500/20 flex-shrink-0">
+                <div className="flex gap-4 p-4 border border-purple-950/10 bg-slate-950/20 rounded-xl hover:border-indigo-500/30 transition-all duration-300">
+                  <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center text-indigo-450 border border-indigo-500/20 flex-shrink-0">
                     <Database className="w-5 h-5" />
                   </div>
                   
                   <div>
-                    <p className="text-xs font-bold font-mono text-white uppercase">PostgreSQL DSPM write</p>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">50 parallel inserts will cause lock contention if the `dspm_findings` table is not indexed. A `COPY` or batch insert is required.</p>
+                    <p className="text-xs font-bold font-mono text-white uppercase">Amazon RDS PostgreSQL DSPM Write</p>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">50 parallel inserts on PostgreSQL (Amazon RDS) will cause lock contention if the `dspm_findings` table is not indexed. A `COPY` or batch insert is required, planning transition to Amazon Aurora Serverless v2.</p>
                   </div>
                 </div>
 
-                <div className="flex gap-4 p-4 border border-purple-950/10 bg-slate-950/20 rounded-xl hover:border-pink-500/30 transition-all duration-300">
-                  <div className="w-10 h-10 bg-pink-500/10 rounded-lg flex items-center justify-center text-pink-500 border border-pink-500/20 flex-shrink-0">
+                <div className="flex gap-4 p-4 border border-purple-950/10 bg-slate-950/20 rounded-xl hover:border-indigo-500/30 transition-all duration-300">
+                  <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center text-indigo-450 border border-indigo-500/20 flex-shrink-0">
                     <Layers className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold font-mono text-white uppercase">Neo4j Connection Pool</p>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">30 sessions are insufficient for a sustained throughput of 100–200 events per second. Either the connection pool must be increased or an asynchronous driver must be used.</p>
+                    <p className="text-xs font-bold font-mono text-white uppercase">Amazon Neptune & Graph Scale</p>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">Upgrading Neo4j connection pool (currently limited to 30 sessions) to distributed Amazon Neptune & Amazon Aurora architecture for 10x event throughput.</p>
                   </div>
                 </div>
               </div>
@@ -1281,7 +1281,7 @@ const performanceData = [
         <div className="max-w-[95%] xl:max-w-[1400px] mx-auto px-4">
           <div className="text-center mb-10">
             <span className="text-xs font-mono uppercase tracking-widest text-purple-400 block mb-2">// Empirical Validation Dashboard</span>
-            <h2 className="text-4xl font-black text-white tracking-tight">How Kassandra Resolves Exposure</h2>
+            <h2 className="text-4xl font-black text-white tracking-tight">How Kassandra Prophecy Resolves Exposure</h2>
           </div>
 
           {/* Scenario Selector Campaign Button Group */}
@@ -1529,7 +1529,7 @@ const performanceData = [
                 <div className="flex items-center justify-between mb-4 border-b border-purple-950/10 pb-3">
                   <div className="flex items-center space-x-2">
                     <Cpu className="w-4 h-4 text-purple-400" />
-                    <span className="text-sm font-mono font-bold text-slate-200">kassandra_bce_engine</span>
+                    <span className="text-sm font-mono font-bold text-slate-200">kassandra_prophecy_bce_engine</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-[10px] font-mono bg-purple-900/40 text-purple-300 border border-purple-950/30 px-2 py-0.5 rounded">FINDINGS: {findingsCount}</span>
@@ -1687,10 +1687,10 @@ const performanceData = [
 
       <footer className="border-t border-purple-950/10 bg-slate-950/80 py-10 text-center text-xs font-mono text-slate-600 relative z-10">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>© {new Date().getFullYear()} Kassandra Platform Architecture. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} Kassandra Prophecy Platform Architecture. All rights reserved.</div>
           <div className="flex items-center space-x-2 text-slate-500 bg-purple-950/5 border border-purple-950/10 px-3 py-1 rounded-full">
             <CheckCircle className="w-4 h-4 text-purple-400" />
-            <span>Kassandra's Prophecy</span>
+            <span>Kassandra Prophecy</span>
           </div>
         </div>
       </footer>

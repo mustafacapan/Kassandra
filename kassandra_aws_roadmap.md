@@ -1,4 +1,4 @@
-# Kassandra
+# Kassandra Prophecy
 ## Cyber-Economic Autonomous Defense Architecture — Technical Roadmap
 
 *Planned platform extension — architecture and design phase*
@@ -7,9 +7,9 @@
 
 ## 1. What We Are Building
 
-Most security platforms answer one question: **"is this an attack?"** Kassandra is designed to answer a harder, more useful one: **"given everything we know about the threat and everything we know about the business, what is the least damaging way to respond — and can we trust an automated system to act on that answer, within limits we control?"**
+Most security platforms answer one question: **"is this an attack?"** Kassandra Prophecy is designed to answer a harder, more useful one: **"given everything we know about the threat and everything we know about the business, what is the least damaging way to respond — and can we trust an automated system to act on that answer, within limits we control?"**
 
-The core insight: the same security event can require completely different responses depending on business context. An exploit detected at 3:00 AM on a low-traffic system and the same exploit detected during peak payroll processing are not the same decision problem, even though they look identical to a severity-based detection tool. No existing platform models this distinction explicitly. Kassandra is designed to.
+The core insight: the same security event can require completely different responses depending on business context. An exploit detected at 3:00 AM on a low-traffic system and the same exploit detected during peak payroll processing are not the same decision problem, even though they look identical to a severity-based detection tool. No existing platform models this distinction explicitly. Kassandra Prophecy is designed to.
 
 This roadmap describes the architecture we have designed and the phased plan to build it on AWS infrastructure.
 
@@ -23,13 +23,13 @@ This roadmap describes the architecture we have designed and the phased plan to 
 | Automated response systems lack reversibility guarantees | A single bad automated decision can cause outages worse than the attack it prevented (e.g., the 2024 CrowdStrike incident, which took down 8.5M Windows machines from a single bad update) |
 | Threat intelligence isn't shared at the defense-outcome level | Organizations repeatedly relearn the same lessons that another organization already paid for |
 
-Kassandra's design responds to all three: business-context-aware decisions, mandatory reversibility on every automated action, and a collective learning layer that shares *defense outcomes*, not just attack signatures.
+Kassandra Prophecy's design responds to all three: business-context-aware decisions, mandatory reversibility on every automated action, and a collective learning layer that shares *defense outcomes*, not just attack signatures.
 
 ---
 
 ## 3. Architecture Overview
 
-Kassandra is designed as an **8-layer decision pipeline**, split across two operating planes:
+Kassandra Prophecy is designed as an **8-layer decision pipeline**, split across two operating planes:
 
 ```
 COLLECTIVE PLANE (shared intelligence)
