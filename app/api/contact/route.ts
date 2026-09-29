@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const runtime = "nodejs";
 
 const rateLimit = new Map<string, { count: number; resetAt: number }>();
 
@@ -44,6 +44,12 @@ export async function POST(request: Request) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) {
       return NextResponse.json({ error: "Invalid email" }, { status: 400 });
     }
+
+    if (!process.env.RESEND_API_KEY) {
+      console.error("Contact form error: RESEND_API_KEY is not set");
+      return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
+    }
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const { data, error } = await resend.emails.send({
       from: "Kassandra Prophecy <contact@kassandraprophecy.com>",

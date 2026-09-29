@@ -1,7 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
-
 export const alt = "Kassandra Prophecy — Cyber Risk in Financial Terms";
 export const size = {
   width: 1200,
